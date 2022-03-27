@@ -15,7 +15,7 @@ exit:
 	mov ax, SD2
 	mov ds, ax
 
-	xchg ah, Y в ah будет Y
+	xchg ah, Y ; в ah будет Y
 	xchg ah, ES:X ; в ah будет X
 	xchg ah, Y ; в Y будет X
 
