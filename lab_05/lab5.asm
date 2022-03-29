@@ -9,6 +9,8 @@ SD SEGMENT para public 'DATA'
 SD ENDS
 
 MSGS SEGMENT PARA PUBLIC 'DATA'
+	NM_MESS db 'Enter N and M: ', 10, '$'
+	MX_MESS db 'Enter matrix: ', 10, '$'
 	ANS_MESS db 'Answer: ', 10, '$'
 MSGS ENDS
 
@@ -17,6 +19,18 @@ CSEG SEGMENT para public 'CODE'
 
 ans_message:
 	mov dx, offset ANS_MESS
+    mov ah,9
+    int 21h
+	ret
+
+nm_message:
+	mov dx, offset NM_MESS
+    mov ah,9
+    int 21h
+	ret
+
+mx_message:
+	mov dx, offset MX_MESS
     mov ah,9
     int 21h
 	ret
@@ -149,12 +163,14 @@ main:
 	mov ds, ax
 
 	; Ввод N и M
+	call nm_message
 	call read_num
 	mov N, dh
 	
 	call read_num
 	mov M, dh
 
+	call mx_message
 	call read_matr
 
 	call change_matr
