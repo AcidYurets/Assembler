@@ -12,6 +12,7 @@ MSGS SEGMENT PARA PUBLIC 'DATA'
 	NM_MESS db 'Enter N and M: ', 10, '$'
 	MX_MESS db 'Enter matrix: ', 10, '$'
 	ANS_MESS db 'Answer: ', 10, '$'
+	ERR_MESS db 'ERROR!', 10, '$'
 MSGS ENDS
 
 CSEG SEGMENT para public 'CODE'
@@ -35,6 +36,12 @@ mx_message:
     int 21h
 	ret
 
+error_message:
+	mov dx, offset ERR_MESS
+    mov ah,9
+    int 21h
+	ret
+
 read_num: ; Ввод цифры, которая будет в DH
 	mov ah, 1
 	int 21h
@@ -50,7 +57,7 @@ read_matr: ; Ввод матрицы
 	mov bx, 0
 	read_matr_loop:
 		call read_line
-		add bl, M ; Увеличиввем первый индекс массива для правильной адресации
+		add bl, 9 ; Увеличиввем первый индекс массива для правильной адресации
 		loop read_matr_loop
 	ret
 
@@ -92,7 +99,7 @@ print_matr: ; Вывод матрицы
 	mov bx, 0
 	print_matr_loop:
 		call print_line
-		add bl, M ; Увеличиввем первый индекс массива для правильной адресации
+		add bl, 9 ; Увеличиввем первый индекс массива для правильной адресации
 		call end_of_line
 		loop print_matr_loop
 	ret
@@ -150,10 +157,16 @@ change_matr: ; Меняет соседние столбцы местами
 
 	change_matr_lines:
 		call change_elems_in_line
-		add bl, M
+		add bl, 9
 		loop change_matr_lines
 
 	ret
+
+err:
+	call error_message
+
+	mov ax, 4c00h
+	int 21h
 
 main:
 	mov ax, SD
@@ -169,6 +182,17 @@ main:
 	
 	call read_num
 	mov M, dh
+	
+	; Проверки на ввод
+	cmp N, 0
+	jle err
+	cmp M, 0
+	jle err
+	cmp N, 9
+	jg err
+	cmp M, 9
+	jg err
+
 
 	call mx_message
 	call read_matr
