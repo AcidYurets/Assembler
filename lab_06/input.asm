@@ -3,12 +3,20 @@ public input
 
 DSEG SEGMENT para public 'DATA'
 	N dw 1 dup('0')
+	input_msg db 'Input signed bin number: ', 10, '$'
 DSEG ENDS
 
 CSEG SEGMENT para public 'CODE'
 	assume CS:CSEG, DS:DSEG
 
 input:
+    mov ax, DSEG
+	mov ds, ax
+	
+    mov AH, 9	
+    mov dx, offset input_msg				; вывод сообщения
+    int 21H
+
 	mov BX, 0					; вводить число будем в BX
 
     input_loop:
@@ -25,8 +33,6 @@ input:
         jmp input_loop					; считать следующий символ
 
     input_end:					; конец ввода
-    mov ax, DSEG
-	mov ds, ax
 	mov N, BX				; перемещаем число в N
 
 	ret

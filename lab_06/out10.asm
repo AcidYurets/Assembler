@@ -3,7 +3,7 @@ extern newline: near
 public output_dec
 
 DSEG SEGMENT PARA PUBLIC 'DATA'
-    decN db 7 dup('0'), '$'
+    decN db 5 dup('0'), '$'
     sign db ' '
     OUTPUT_dec_MSG db 'Signed decimal number: $'
 DSEG ENDS
@@ -24,7 +24,7 @@ to_dec:
 
     nosign:
 
-    mov bx, 6
+    mov bx, 4
 
     trans_dec:
         mov dx, 0
@@ -53,24 +53,15 @@ to_dec:
 
 
 print_dec:
-    mov cx, 6
     mov bx, 0
-
     mov dl, sign
 
     mov ah, 2
     int 21h
 
-    loop_dec: 
-        mov ah, 2
-
-        mov dl, decN[bx]
-
-        inc bx
-
-        int 21h
-        
-        loop loop_dec
+    mov AH, 9	
+    mov dx, offset decN
+    int 21H
 
     mov sign, ' '
 
