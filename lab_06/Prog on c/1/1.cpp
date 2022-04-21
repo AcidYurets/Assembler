@@ -4,7 +4,7 @@
 
 int main()
 {
-	int x;
+	short x;
 	scanf("%x", &x);
 
 	printf("%d", x);
