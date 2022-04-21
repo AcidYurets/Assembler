@@ -1,5 +1,5 @@
 extern input: near
-extern output_dec: near
+extern output_bin: near
 extern output_hex: near
 extern N: word
 public newline
@@ -12,10 +12,10 @@ MSGS SEGMENT PARA PUBLIC 'DATA'
 
 	Menu db 'Menu: ', 10
 	db '0. Exit', 10
-	db '1. Input number as signed in 2 c/c', 10
-	db '2. Print number as unsigned in 16 c/c', 10
-	db '3. Print number as signed in 10 c/c', 10, '$'
-	Actions dw exit, input, output_hex, output_dec
+	db '1. Input number as unsigned in 8 c/c', 10
+	db '2. Print number as unsigned in 2 c/c', 10
+	db '3. Print number as signed in 16 c/c', 10, '$'
+	Actions dw exit, input, output_bin, output_hex
 MSGS ENDS
 
 CSEG SEGMENT para public 'CODE'
@@ -64,7 +64,7 @@ main:
 		push cx
 		call Actions[si]
 		pop cx
-		
+
 		loop Menu_loop
 
 
