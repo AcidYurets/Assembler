@@ -4,8 +4,8 @@
 
 int main()
 {
-    char src[] = "Hello World!";
-    char dst[] = "01234567890123456789";
+    char src[100] = "Hello World!";
+    char dst[100] = "0123456789012345678";
 
 
     std::cout << "Lenght = " << slen(src) << '\n';
@@ -13,6 +13,6 @@ int main()
     scpy(dst, src, slen(src));
     std::cout << dst;
 
-    return 0;
+    return 0;  
 }
 
