@@ -9,9 +9,9 @@ public scpy
 scpy:
     push ebp
     mov ebp, esp
-	mov edx, [ebp + 8]
+	mov edi, [ebp + 8]
 	mov esi, [ebp + 12]
-    mov edi, [ebp + 16]
+    mov edx, [ebp + 16]
 
     mov ecx, edx ; Кладём длину источника в счётчик
 
@@ -36,7 +36,7 @@ fwd:
 
     cld          ; В прямом направлении
     rep movsb    ; побайтово копируем
-    
+
     pop ebp
     ret
 
