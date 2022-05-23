@@ -154,8 +154,8 @@ long double hmul80(long double a, long double b) {
 
     // Кладём на стек b и a, домножаем b на a
     __asm {
-        fld b
         fld a
+        fld b
         fmulp ST(1), ST(0)
         fstp c
     };

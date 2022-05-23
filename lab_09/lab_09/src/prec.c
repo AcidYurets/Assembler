@@ -1,25 +1,51 @@
-/*#include <stdio.h>
+#include <stdio.h>
 
 #include "prec.h"
 
+long double fsin_fldpi(long double x);
+
 void line(long double p) {
-    printf("π = %Le, sin(π / 1) = % Le, sin(π / 2) = % Le;\n",
+    printf("PI = %Le, sin(PI / 1) = %Le, sin(PI / 2) = %Le;\n",
         p, fsin(p / 1), fsin(p / 2));
 }
 
-int main() {
+void line_fldpi() {
+    printf("PI = %Le, sin(PI / 1) = %Le, sin(PI / 2) = %Le;\n",
+        fldpi(), fsin_fldpi(1), fsin_fldpi(0.5));
+}
+
+/*int main() {
     line(PREC2PI);
     line(PREC6PI);
-    line(fldpi());
+    line_fldpi();
 
     return 0;
-}
+}*/
 
 long double fsin(long double x) {
     long double y;
 
     // Кладём на стек x, берём синус
-    asm("fsin" : "=t" (y) : "0" (x));
+    __asm{
+        fld x
+        fsin
+        fstp y
+    };
+
+    return y;
+}
+
+long double fsin_fldpi(long double x) {
+    long double y;
+
+    // Кладём на стек x, берём синус
+    __asm { 
+        fld x
+        fldpi
+        fmulp ST(1), ST(0)
+        fsin 
+        fstp y
+    };
 
     return y;
 }
@@ -27,8 +53,11 @@ long double fsin(long double x) {
 long double fldpi() {
     long double p;
 
-    // Кладём на стек π
-    asm("fldpi" : "=t" (p));
+    // Кладём на стек PI
+    __asm { 
+        fldpi
+        fstp p
+    };
 
     return p;
-}*/
+}
